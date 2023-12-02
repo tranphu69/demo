@@ -7,28 +7,26 @@ class MyComponent extends React.Component{
         age: 26
     };
 
-    handleClick = (event) => {
-        console.log(this.state.name);
-
+    handleOnChangeInput = (event) => {
         this.setState({
-            name:'thay doi roi'
+            name: event.target.value
         })
     }
-
-    handleOnMoverOver(event){
-        console.log(this.state.age);
-
-        this.setState({
-            age: Math.floor((Math.random() * 100) + 1)
-        })
+    handleOnSubmit = (event) => {
+        event.preventDefault();
+        console.log(this.state);
     }
 
     render(){
         return(
             <div> 
-                my first {this.state.name} and i'm from {this.state.age} 
-                <button onMouseOver={(event) => {this.handleOnMoverOver(event)}}>hover me</button>
-                <button onClick={this.handleClick}>click me</button>
+                my name is {this.state.name} and i'm {this.state.age}
+                <form onSubmit={(event) => {this.handleOnSubmit(event)}}>
+                    <input 
+                    type="text"
+                    onChange={(event) => {this.handleOnChangeInput(event)}}/>
+                    <button>Submit</button>
+                </form>
             </div>
         );
     }
