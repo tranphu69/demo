@@ -14,6 +14,7 @@ import sidebarBg from '../../assets/bg2.jpg';
 import {MdDashboard} from 'react-icons/md';
 import {DiReact} from "react-icons/di";
 import './SideBar.scss';
+import { Link } from 'react-router-dom';
 
 
 const SideBar = (props) => {
@@ -51,6 +52,7 @@ const SideBar = (props) => {
                             icon={<MdDashboard />}
                         >
                             Dashboard
+                            <Link to="/admin"/>
                         </MenuItem>
                     </Menu>
                     <Menu iconShape="circle">
@@ -58,7 +60,10 @@ const SideBar = (props) => {
                             icon={<FaGem/>}
                             title="Features"
                         >
-                            <MenuItem> Quản lý User </MenuItem>
+                            <MenuItem>
+                                Quản lý User
+                                <Link to="manager-users"/>
+                            </MenuItem>
                             <MenuItem> Quản lý bài Quiz </MenuItem>
                             <MenuItem> Quản lý câu hỏi </MenuItem>
                         </SubMenu>
@@ -74,14 +79,14 @@ const SideBar = (props) => {
                         }}
                     >
                         <a
-                            href="https://github.com/azouaoui-med/react-pro-sidebar"
+                            href="https://github.com/tranphu69/demo"
                             target="_blank"
                             className="sidebar-btn"
                             rel="noopener noreferrer"
                         >
                             <FaGithub />
                             <span style={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
-                                &#169; Hỏi Dân IT Udemy
+                                &#169; Tran Phu
                             </span>
                         </a>
                     </div>
