@@ -30,6 +30,10 @@ const ManagerUser = (props) => {
         setDataUpdate(user);
     }
 
+    const resetUpdateData = () => {
+        setDataUpdate({});
+    }
+
     return(
         <div className="manage-user-container">
             <div className="title">
@@ -45,7 +49,13 @@ const ManagerUser = (props) => {
                     <TableUser listUsers={listUsers} handleClickBtnUpdate={handleClickBtnUpdate}/>
                 </div>
                 <ModalCreateUser show={showModalCreateUser} setShow={setShowModalCreateUser} fetchListUsers={fetchListUsers}/>
-                <ModalUpdateUser show={showModalUpdateUser} setShow={setShowModalUpdateUser} dataUpdate={dataUpdate}/>
+                <ModalUpdateUser 
+                    show={showModalUpdateUser} 
+                    setShow={setShowModalUpdateUser} 
+                    dataUpdate={dataUpdate} 
+                    fetchListUsers={fetchListUsers}
+                    resetUpdateData={resetUpdateData}
+                />
             </div>
         </div>
     )
