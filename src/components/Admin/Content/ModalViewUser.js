@@ -36,7 +36,7 @@ const ModalViewUser = (props) => {
               </select>
             </div>
             <div class="col-md-12">
-              <label class="form-label label-upload" htmlFor='labelUpload'> 
+              <label class="form-label label-upload"> 
                  Image
               </label>
             </div>
