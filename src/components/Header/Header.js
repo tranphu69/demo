@@ -1,7 +1,6 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 const Header = () => {
@@ -22,7 +21,7 @@ const Header = () => {
           </Nav>
           <Nav>
             <button className='btn-login' onClick={() => {handleLogin()}}>Log in</button>
-            <button className='btn-signup'>Sign up</button>
+            <button className='btn-signup'onClick={() => {navigate("/register")}}>Sign up</button>
           </Nav>
         </Navbar.Collapse>
       </Container>
