@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './ManageQuiz.scss';
 import Select from 'react-select';
-import { postCreateNewQuiz } from '../../../../services/apiService';
+import { postCreateNewQuiz, getAllQuizForAdmin } from '../../../../services/apiService';
 import {toast} from 'react-toastify';
 import TableQuiz from './TableQuiz';
 import Accordion from 'react-bootstrap/Accordion';
+import ModalDeleteQuiz from './ModalDeleteQuiz';
+import ModalEditQuiz from './ModalEditQuiz';
 
 const options = [
     { value: 'EASY', label: 'EASY' },
@@ -17,6 +19,22 @@ const ManageQuiz = (props) => {
     const [description, setDescription] = useState('');
     const [type, setType] = useState('');
     const [image, setImage] = useState(null);
+    const [listQuiz, setListQuiz] = useState([]);
+    const [showModalDeleteQuiz, setShowModalDeleteQuiz] = useState(false);
+    const [showModalEditQuiz, setShowModalEditQuiz] = useState(false);
+    const [dataDelete, setDataDelete] = useState({});
+    const [dataEdit, setDataEdit] = useState({});
+
+    useEffect(() => {
+        fetchListQuizzes();
+    }, [])
+
+    const fetchListQuizzes = async() => {
+        let res = await getAllQuizForAdmin();
+        if(res.EC === 0){
+            setListQuiz(res.DT);
+        }
+    }
 
     const handleChangeFile = (event) => {
         if(event.target && event.target.files && event.target.files[0]){   
@@ -33,12 +51,27 @@ const ManageQuiz = (props) => {
         let res = await postCreateNewQuiz(description, name, type?.value, image);
         if(res && res.EC === 0){
             toast.success(res.EM);
+            fetchListQuizzes();
             setName('');
             setDescription('');
             setImage(null);
         }else{
             toast.error(res.EM);
         }
+    }
+
+    const handleClickBtnDelete = (quiz) => {
+        setShowModalDeleteQuiz(true);
+        setDataDelete(quiz)
+    }
+
+    const handleClickBtnEdit  = (quiz) => {
+        setShowModalEditQuiz(true);
+        setDataEdit(quiz);
+    }
+
+    const resetEditData = () => {
+        setDataEdit({})
     }
 
     return(
@@ -79,8 +112,26 @@ const ManageQuiz = (props) => {
                 </Accordion.Item>
             </Accordion>
             <div className="list-detail">
-                <TableQuiz/>
+                <TableQuiz
+                    listQuiz = {listQuiz}
+                    handleClickBtnDelete={handleClickBtnDelete}
+                    fetchListQuizzes = {fetchListQuizzes}
+                    handleClickBtnEdit = {handleClickBtnEdit}
+                />
             </div>
+            <ModalDeleteQuiz
+                show={showModalDeleteQuiz}
+                setShow={setShowModalDeleteQuiz}
+                dataDelete = {dataDelete}
+                fetchListQuizzes = {fetchListQuizzes}
+            />
+            <ModalEditQuiz
+                show={showModalEditQuiz}
+                setShow = {setShowModalEditQuiz}
+                dataEdit = {dataEdit}
+                fetchListQuizzes = {fetchListQuizzes}
+                resetEditData = {resetEditData}
+            />
         </div>
     )
 }

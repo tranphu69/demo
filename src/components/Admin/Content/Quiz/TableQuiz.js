@@ -2,22 +2,8 @@ import { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import { getAllQuizForAdmin } from '../../../../services/apiService';
 
-const TableQuiz = () => {
-    const [listQuiz, setListQuiz] = useState([]);
-
-    useEffect(() => {
-        fetchQuiz();
-    }, [])
-
-    const fetchQuiz = async() => {
-        let res = await getAllQuizForAdmin();
-        console.log(res);
-        if(res && res.EC === 0){
-            setListQuiz(res.DT)
-            console.log(res.DT);
-        }
-    }
-
+const TableQuiz = (props) => {
+    const {listQuiz} = props;
     return(
         <>
             <div>List Quizzes: </div>
@@ -41,8 +27,8 @@ const TableQuiz = () => {
                                     <td>{item.description}</td>
                                     <td>{item.difficulty}</td>
                                     <td style={{display: "flex", gap: "15px"}}>
-                                        <button className='btn btn-primary'>Edit</button>
-                                        <button className='btn btn-danger'>Delete</button>
+                                        <button className='btn btn-primary'onClick={() => props.handleClickBtnEdit(item)}>Edit</button>
+                                        <button className='btn btn-danger' onClick={() => props.handleClickBtnDelete(item)}>Delete</button>
                                     </td>
                                 </tr>
                             )

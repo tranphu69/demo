@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { FcPlus } from 'react-icons/fc';
-import {ToastContainer, toast} from 'react-toastify';
+import { toast} from 'react-toastify';
 import { putUpdateUser } from '../../../services/apiService';
 import _ from 'lodash';
 
@@ -12,7 +12,6 @@ const ModalUpdateUser = (props) => {
     setShow(false);
     setEmail("");
     setImage("");
-    setPassword("");
     setRole("USER");
     setPreviewImage("");
     setUsername("");

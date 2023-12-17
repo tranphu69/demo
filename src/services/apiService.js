@@ -28,8 +28,8 @@ const deleteUser = (userId) => {
 const getUserWithPaginate = (page, limit) => {
     return axios.get(`/api/v1/participant?page=${page}&limit=${limit}`);
 }
-const postLogin = (userEmail, userPassword, delay) => {
-    return axios.post('/api/v1/login', {email: userEmail, password: userPassword, delay: 5000})
+const postLogin = (userEmail, userPassword) => {
+    return axios.post('/api/v1/login', {email: userEmail, password: userPassword})
 }
 const postRegister = (userEmail, userPassword, userName) => {
     return axios.post('/api/v1/register', {email: userEmail, password: userPassword, username: userName})
@@ -54,9 +54,22 @@ const postCreateNewQuiz = (description, name, difficulty, image) => {
 const getAllQuizForAdmin = () => {
     return axios.get('/api/v1/quiz/all')
 }
+const deleteQuiz = (quizId) => {
+    return axios.delete(`/api/v1/quiz/${quizId}`)
+}
+const putEditQuiz = (id, description, name, difficulty, image) => {
+    const data = new FormData();
+    data.append('id', id);
+    data.append('description', description);
+    data.append('name', name);
+    data.append('difficulty', difficulty);
+    data.append('quizImage', image);
+    return axios.put('/api/v1/quiz', data);
+}
 export {
     postCreateNewUser, getAllUsers, putUpdateUser, 
     deleteUser, getUserWithPaginate, postLogin, 
     postRegister, getQuizByUser, getDataQuiz,
-    postSubmitQuiz, postCreateNewQuiz, getAllQuizForAdmin
+    postSubmitQuiz, postCreateNewQuiz, getAllQuizForAdmin,
+    deleteQuiz, putEditQuiz
 };
