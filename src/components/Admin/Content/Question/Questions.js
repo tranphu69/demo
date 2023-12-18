@@ -8,10 +8,11 @@ import {v4 as uuidv4, validate} from 'uuid';
 import _ from 'lodash';
 import Lightbox from "react-awesome-lightbox";
 import { getAllQuizForAdmin, postCreateNewQuestionForQuiz, postCreateNewAnswerForQuestion } from '../../../../services/apiService';
+import { toast} from 'react-toastify';
 
 const Questions = (props) => {
     const [selectedQuiz, setSelectedQuiz] = useState({});
-    const [questions, setQuestions] = useState([
+    const initQuestions = [
         {
             id: uuidv4(),
             description:"",
@@ -25,7 +26,8 @@ const Questions = (props) => {
                 }
             ]
         }
-    ])
+    ];
+    const [questions, setQuestions] = useState(initQuestions);
     const [isPreviewImage, setIsPreviewImage] = useState(false);
     const [dataImagePreview, setDataImagePreview] = useState({
         title:'',
@@ -147,17 +149,54 @@ const Questions = (props) => {
     }
 
     const handSubmitQuestion = async() => {
-        console.log('questions: ', questions, selectedQuiz);
         // validate data
-        // postCreateNewQuestionForQuiz, postCreateNewAnswerForQuestion
+        if(_.isEmpty(selectedQuiz)){
+            toast.error("Please choose a Quiz!");
+            return;
+        }
+        // validate question
+        let isValidQuestion = true;
+        let indexQuestion = 0;
+        for(let i = 0; i < questions.length; i++){
+            if(!questions[i].description){
+                isValidQuestion = false
+                indexQuestion = i;
+                break
+            }
+        }
+        if(isValidQuestion === false){
+            toast.error(`Not empty description for question ${indexQuestion + 1}`);
+            return;
+        }
+        // validate answer
+        let isValidAnswer = true;
+        let indexQ = 0, indexA = 0;
+        for(let i=0; i< questions.length; i++){
+            for(let j = 0; j < questions[i].answers.length; j++){
+                if(!questions[i].answers[j]. description){
+                    isValidAnswer = false;
+                    indexQ = i;
+                    indexA = j;
+                    break;
+                }
+            }
+            indexQ = i;
+            if(isValidAnswer ===  false) break;
+        }
+        if(isValidAnswer === false){
+            toast.error(`Not empty description for answer ${indexA + 1} at question ${indexQ + 1}`);
+            return;
+        }
         //submit questions
-        await Promise.all(questions.map(async (question) => {
+        for(const question of questions){
             const q = await postCreateNewQuestionForQuiz(+selectedQuiz.value, question.description, question.imageFile);
             //submit answer
-            await Promise.all(question.answers.map(async (answer) => {
+            for(const answer of question.answers){
                 await postCreateNewAnswerForQuestion(answer.description, answer.isCorrect, q.DT.id)
-            }));
-        }));
+            }
+        }
+        toast.success('Create questions and answers successed!')
+        setQuestions(initQuestions);
     }
 
     return(
